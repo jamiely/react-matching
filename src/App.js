@@ -80,7 +80,12 @@ function say(word, voiceIndex) {
   console.log(`Voice index ${voiceIndex}`);
   const utterThis = new SpeechSynthesisUtterance(word);
   utterThis.voice = voices[voiceIndex ?? 0];
+  utterThis.volume = 0.5;
   synth.speak(utterThis);
+}
+
+function calcIsWin(cards) {
+  return !cards.find(c => !c.hidden);
 }
 
 function getInitialVoiceIndex() {
@@ -133,13 +138,24 @@ function App() {
 
   }, [revealedCount, cards])
 
+  const isWin = calcIsWin(cards);
+  console.log(`isWin? ${isWin}`);
+
+  if(isWin) {
+    say('You won!', voiceIndex);
+  }
+
+  let content = isWin ? 
+    <div className="youWin">You Won!</div> :
+    <Board cards={cards} onClick={onClick} />;
+
   return (
     <div className="App">
       <header className="App-header">
         <h1>Matching</h1>
       </header>
       <section className="App-main">
-        <Board cards={cards} onClick={onClick} />
+        {content}        
       </section>
       <section className="controls">
         <ul className="letterList">

@@ -35,3 +35,13 @@ body {
 .controls {
   margin-top: 50vw;
 }
+
+.youWin {
+  height: 50vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: green; 
+  font-size: 100pt;
+}
