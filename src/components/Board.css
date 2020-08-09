@@ -1,14 +1,38 @@
 .board {
     display: grid;
+    font-size: 50pt;
+}
+
+@media all and (orientation:portrait) {
+    .board {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    .card {
+        width: 18vw;
+        height: 18vw;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+@media all and (orientation:landscape) {
+    .board {
+        grid-template-columns: repeat(8, 1fr);
+    }
+    .card {
+        width: 13vh;
+        height: 13vh;
+        line-height: 13vh;
+    }
 }
 
 .card {
     background-color: #333;
     border: 1px blue solid;
-    height: 60px;
-    width: 60px;
+    /* height: 60px;
+    width: 60px; */
     margin: 10px;
-    line-height: 50px;
 }
 
 .card.hidden {

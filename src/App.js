@@ -1,11 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import logo from './logo.svg';
 import './App.css';
 import _ from 'lodash';
 import Board from './components/Board';
 
 const LOWERCASE_LETTERS = 'abcdefghijklmnopqrstuvwxyz';
 const UPPERCASE_LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+const NUMBERS = '0123456789';
+const QUERY_CHARS = 'characters';
 
 const synth = window.speechSynthesis;
 const voices = synth.getVoices();
@@ -51,8 +52,8 @@ function makeMatchingCardsHidden(cards) {
     return cards;
   }
 
-  if(showedValues.length == 2) return cards;
-  if(showedValues.length == 0) {
+  if(showedValues.length === 2) return cards;
+  if(showedValues.length === 0) {
     console.error("Shouldn't happen, there should be at least 1 value");
     return cards;
   }
@@ -93,7 +94,7 @@ function App() {
   const urlParams = new URLSearchParams(window.location.search);
 
   const [cards, setCards] = useState(generateCards(
-    urlParams.get('letters') ?? LOWERCASE_LETTERS,
+    urlParams.get(QUERY_CHARS) ?? LOWERCASE_LETTERS,
     urlParams.get('cardCount') ?? 13));
   const [revealedCount, setRevealedCount] = useState(0);
   const [voiceIndex, setVoiceIndex] = useState(getInitialVoiceIndex());
@@ -130,7 +131,7 @@ function App() {
       setCards(evaluateCards(cards));
     }, CARD_FLIP_DELAY);
 
-  }, [revealedCount])
+  }, [revealedCount, cards])
 
   return (
     <div className="App">
@@ -140,14 +141,17 @@ function App() {
       <section className="App-main">
         <Board cards={cards} onClick={onClick} />
       </section>
-      <ul className="letterList">
-        <li>{UPPERCASE_LETTERS}</li>
-        <li>{LOWERCASE_LETTERS}</li>
-      </ul>
-      <select value={voiceIndex} onChange={evt => setVoiceIndex(evt.target.value)}>
-        {voices.map((voice, index) =>
-          <option key={voice.name} value={index}>{voice.name}</option>)}
-      </select>
+      <section className="controls">
+        <ul className="letterList">
+          <li><a href={`/?${QUERY_CHARS}=` + UPPERCASE_LETTERS}>Uppercase Letters</a></li>
+          <li><a href={`/?${QUERY_CHARS}=` + LOWERCASE_LETTERS}>Lowercase Letters</a></li>
+          <li><a href={`/?${QUERY_CHARS}=` + NUMBERS}>Numbers</a></li>
+        </ul>
+        <select value={voiceIndex} onChange={evt => setVoiceIndex(evt.target.value)}>
+          {voices.map((voice, index) =>
+            <option key={voice.name} value={index}>{voice.name}</option>)}
+        </select>
+      </section>
     </div>
   );
 }

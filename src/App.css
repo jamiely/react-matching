@@ -1,5 +1,4 @@
 body {
-  font-size: 30pt;
   font-family: Helvetica, Arial, sans-serif
 }
 
@@ -31,4 +30,8 @@ body {
 .letterList {
   color: #EEE;
   font-size: medium;
+}
+
+.controls {
+  margin-top: 50vw;
 }
