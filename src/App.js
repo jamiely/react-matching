@@ -76,11 +76,11 @@ function evaluateCards(cards) {
 
 const CARD_FLIP_DELAY = 1000;
 
-function say(word, voiceIndex) {
-  console.log(`Voice index ${voiceIndex}`);
+function say(word, {voiceIndex, volume}) {
+  console.log(`Voice index ${voiceIndex} volume ${volume}`);
   const utterThis = new SpeechSynthesisUtterance(word);
   utterThis.voice = voices[voiceIndex ?? 0];
-  utterThis.volume = 0.5;
+  utterThis.volume = volume;
   synth.speak(utterThis);
 }
 
@@ -103,13 +103,15 @@ function App() {
     urlParams.get('cardCount') ?? 13));
   const [revealedCount, setRevealedCount] = useState(0);
   const [voiceIndex, setVoiceIndex] = useState(getInitialVoiceIndex());
+  const [volumePct, setVolumePct] = useState(50);
+  const volume = volumePct / 100;
 
   console.log(`Starting with voice index ${voiceIndex}`);
 
   function onClick(arg) {
     const {cardIndex, recite} = arg;
     if(revealedCount >= 2) return;
-    say(recite, voiceIndex);
+    say(recite, {voiceIndex, volume});
 
     console.log(arg)
     const newCards = cards.map((card, index) => {
@@ -142,7 +144,7 @@ function App() {
   console.log(`isWin? ${isWin}`);
 
   if(isWin) {
-    say('You won!', voiceIndex);
+    say('You won!', {voiceIndex, volume});
   }
 
   let content = isWin ? 
@@ -167,10 +169,20 @@ function App() {
           <li><a href={`/?${QUERY_CHARS}=` + LOWERCASE_LETTERS.substr(13, 13)}>Lowercase Letters (1st half)</a></li>
           <li><a href={`/?${QUERY_CHARS}=` + LOWERCASE_LETTERS.substr(0, 13)} >Lowercase Letters (2nd half)</a></li>
         </ul>
-        <select value={voiceIndex} onChange={evt => setVoiceIndex(evt.target.value)}>
-          {voices.map((voice, index) =>
-            <option key={voice.name} value={index}>{voice.name}</option>)}
-        </select>
+
+        <fieldset>
+          <legend>Volume Controls</legend>
+          <select value={voiceIndex} onChange={evt => setVoiceIndex(evt.target.value)}>
+            {voices.map((voice, index) =>
+              <option key={voice.name} value={index}>{voice.name}</option>)}
+          </select>
+          <label for="volumeSlider">
+            Volume: <input type="range" min="0" max="100" class="slider"
+              id="volumeSlider"
+              value={volumePct}
+              onChange={evt => setVolumePct(evt.target.value)} />
+          </label>
+        </fieldset>
       </section>
     </div>
   );
