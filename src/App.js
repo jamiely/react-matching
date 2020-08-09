@@ -146,6 +146,10 @@ function App() {
           <li><a href={`/?${QUERY_CHARS}=` + UPPERCASE_LETTERS}>Uppercase Letters</a></li>
           <li><a href={`/?${QUERY_CHARS}=` + LOWERCASE_LETTERS}>Lowercase Letters</a></li>
           <li><a href={`/?${QUERY_CHARS}=` + NUMBERS}>Numbers</a></li>
+          <li><a href={`/?${QUERY_CHARS}=` + UPPERCASE_LETTERS.substr(13, 13)}>Uppercase Letters (1st half)</a></li>
+          <li><a href={`/?${QUERY_CHARS}=` + UPPERCASE_LETTERS.substr(0, 13)}>Uppercase Letters (2nd half)</a></li>
+          <li><a href={`/?${QUERY_CHARS}=` + LOWERCASE_LETTERS.substr(13, 13)}>Lowercase Letters (1st half)</a></li>
+          <li><a href={`/?${QUERY_CHARS}=` + LOWERCASE_LETTERS.substr(0, 13)} >Lowercase Letters (2nd half)</a></li>
         </ul>
         <select value={voiceIndex} onChange={evt => setVoiceIndex(evt.target.value)}>
           {voices.map((voice, index) =>
