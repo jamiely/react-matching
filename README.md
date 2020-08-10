@@ -1,3 +1,43 @@
+# React Matching
+
+A matching/memory game based on characters. A simple game to teach someone
+letters or numbers.
+
+https://demo-matching.jamie.ly
+
+# How to Play
+
+Click on two cards to flip them over. If they match, they'll be removed from
+the board. If not, they will be flipped face down. Continue until all the
+cards are matched.
+
+# Features
+
+Change characters used by clicking on the links. The url parameter
+`characters` controls what characters are used in the game. This is
+useful if you are trying to teach someone specific characters like
+those in their name.
+
+A computer voice will recite the character. There are voice controls at the
+bottom of the page for setting voice type and volume.
+
+There are also handy URLs at the bottom of the page preconfigured for
+particular character lists.
+
+# Screenshots
+
+<img src="https://raw.githubusercontent.com/jamiely/react-matching/master/docs/screenshots/match1.png" alt="Matching Grid">
+<img src="https://raw.githubusercontent.com/jamiely/react-matching/master/docs/screenshots/match2.png" alt="Matching Grid">
+<img src="https://raw.githubusercontent.com/jamiely/react-matching/master/docs/screenshots/match3.png" alt="Matching Grid">
+<img src="https://raw.githubusercontent.com/jamiely/react-matching/master/docs/screenshots/match4.png" alt="Matching Grid">
+<img src="https://raw.githubusercontent.com/jamiely/react-matching/master/docs/screenshots/control1.png" alt="Game Controls">
+
+# Screencast
+
+TBD
+
+# Dev Notes
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

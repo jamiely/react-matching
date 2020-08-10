@@ -11,6 +11,8 @@ const QUERY_CHARS = 'characters';
 const synth = window.speechSynthesis;
 const voices = synth.getVoices();
 
+const CARD_FLIP_DELAY = 1000;
+
 console.log(voices);
 
 function generateCards(allowedLetters, cardCount) {
@@ -73,8 +75,6 @@ function makeMatchingCardsHidden(cards) {
 function evaluateCards(cards) {
   return makeCardsFaceDown(makeMatchingCardsHidden(cards));
 }
-
-const CARD_FLIP_DELAY = 1000;
 
 function say(word, {voiceIndex, volume}) {
   console.log(`Voice index ${voiceIndex} volume ${volume}`);
@@ -164,10 +164,10 @@ function App() {
           <li><a href={`/?${QUERY_CHARS}=` + UPPERCASE_LETTERS}>Uppercase Letters</a></li>
           <li><a href={`/?${QUERY_CHARS}=` + LOWERCASE_LETTERS}>Lowercase Letters</a></li>
           <li><a href={`/?${QUERY_CHARS}=` + NUMBERS}>Numbers</a></li>
-          <li><a href={`/?${QUERY_CHARS}=` + UPPERCASE_LETTERS.substr(13, 13)}>Uppercase Letters (1st half)</a></li>
-          <li><a href={`/?${QUERY_CHARS}=` + UPPERCASE_LETTERS.substr(0, 13)}>Uppercase Letters (2nd half)</a></li>
-          <li><a href={`/?${QUERY_CHARS}=` + LOWERCASE_LETTERS.substr(13, 13)}>Lowercase Letters (1st half)</a></li>
-          <li><a href={`/?${QUERY_CHARS}=` + LOWERCASE_LETTERS.substr(0, 13)} >Lowercase Letters (2nd half)</a></li>
+          <li><a href={`/?${QUERY_CHARS}=` + UPPERCASE_LETTERS.substr(0, 13)}>Uppercase Letters (1st half)</a></li>
+          <li><a href={`/?${QUERY_CHARS}=` + UPPERCASE_LETTERS.substr(13, 13)}>Uppercase Letters (2nd half)</a></li>
+          <li><a href={`/?${QUERY_CHARS}=` + LOWERCASE_LETTERS.substr(0, 13)} >Lowercase Letters (1st half)</a></li>
+          <li><a href={`/?${QUERY_CHARS}=` + LOWERCASE_LETTERS.substr(13, 13)}>Lowercase Letters (2nd half)</a></li>
         </ul>
 
         <fieldset>
