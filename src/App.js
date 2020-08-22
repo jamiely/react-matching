@@ -108,16 +108,16 @@ function App() {
   useEffect(() => {
     if(! reveal) return;
 
-    setCards(cards => cards.map(c => {
-      return {...c, faceDown: false}
-    }));
+    const flipCards = faceDown =>
+      setCards(cards => cards.map(c => {
+        return {...c, faceDown: faceDown}
+      }));
+
+    flipCards(false);
 
     setTimeout(() => {
       setReveal(false);
-      setCards(cards => 
-        cards.map(c => {
-          return {...c, faceDown: true}
-        }));
+      flipCards(true);
     }, INITIAL_REVEAL_MILLIS);
   }, [reveal])
 
@@ -132,7 +132,7 @@ function App() {
     const {cardIndex, recite} = arg;
     const card = cards[cardIndex];
     if(card.hidden) return;
-    if(card.faceUp) return;
+    if(!card.faceDown) return;
 
     if(revealedCount >= 2) return;
     say(recite, {voiceIndex, volume});
