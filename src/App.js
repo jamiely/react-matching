@@ -15,6 +15,8 @@ const CARD_FLIP_DELAY = 1000;
 
 console.log(voices);
 
+const revealBeforeStart = true;
+
 function generateCards(allowedLetters, cardCount) {
   console.log(allowedLetters);
 
@@ -22,7 +24,7 @@ function generateCards(allowedLetters, cardCount) {
     return {
       text: c,
       recite: c.toLowerCase(),
-      faceDown: true
+      faceDown: !revealBeforeStart
     };
   });
 
@@ -101,6 +103,16 @@ function App() {
   const [cards, setCards] = useState(generateCards(
     urlParams.get(QUERY_CHARS) ?? LOWERCASE_LETTERS,
     urlParams.get('cardCount') ?? 13));
+
+  if(revealBeforeStart) {
+    setTimeout(() => {
+      const newCards = cards.map(c => {
+        return {...c, faceDown: true};
+      });
+      setCards(newCards);
+    }, 2000);
+  }
+
   const [revealedCount, setRevealedCount] = useState(0);
   const [voiceIndex, setVoiceIndex] = useState(getInitialVoiceIndex());
   const [volumePct, setVolumePct] = useState(50);
@@ -112,6 +124,7 @@ function App() {
     const {cardIndex, recite} = arg;
     const card = cards[cardIndex];
     if(card.hidden) return;
+    if(card.faceUp) return;
 
     if(revealedCount >= 2) return;
     say(recite, {voiceIndex, volume});
