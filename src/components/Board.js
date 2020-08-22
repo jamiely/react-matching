@@ -5,19 +5,31 @@ import './Board.css';
 // we want the jitter to persist for the cards
 const minRotation = 1;
 const maxRotation = 5;
+const shouldInclude90DegreeTurns = false;
+const chanceOfRotation = .5;
 const rotations = (() => {
   const rotations = [];
-  const getRotation = () => Math.floor(Math.random() * maxRotation) + minRotation;
+  const getRotation = () => {
+    const initial = Math.floor(Math.random() * maxRotation) + minRotation;
+    const sign = Math.random() <= .5 ? -1 : 1;
+    return initial * sign;
+  };
   for(let i = 0; i < 100; i++) {
-    const shouldRotate = Math.random() > .7;
-    rotations.push(shouldRotate ? getRotation(): 0);
+    const shouldRotate = Math.random() < chanceOfRotation;
+    let rotation = shouldRotate ? getRotation(): 0;
+    if(shouldInclude90DegreeTurns && Math.random() < .3) {
+      const adjustment = Math.floor(Math.random() * 4) * 90;
+      rotation += adjustment;
+    }
+
+    rotations.push(rotation);
   }
   return rotations;
 })();
 
 const minJitter = 1;
-const maxJitter = 10;
-const chanceOfJittering = .3;
+const maxJitter = 15;
+const chanceOfJittering = .5;
 const jitters = (() => {
   const rtn = [];
   const getJitter = () => Math.floor(Math.random() * maxJitter) + minJitter;

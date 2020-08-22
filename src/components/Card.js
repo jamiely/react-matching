@@ -37,9 +37,21 @@ function Card({card, style, onClick}) {
     classNames.push('hidden');
   }
 
+  let styles = {
+    ...style
+  };
+
+  if(!hidden) {
+    styles = {
+      ...styles,
+      backgroundColor, 
+      borderColor
+    };
+  }
+
   return (
     <div className={classNames.join(' ')}
-      style={{...style, backgroundColor, borderColor}}
+      style={styles}
       onClick={() => onClick(card)}>{text}</div>
   )
 }

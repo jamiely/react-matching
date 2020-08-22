@@ -7,6 +7,7 @@ const LOWERCASE_LETTERS = 'abcdefghijklmnopqrstuvwxyz';
 const UPPERCASE_LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 const NUMBERS = '0123456789';
 const QUERY_CHARS = 'characters';
+const INITIAL_REVEAL_MILLIS = 5000;
 
 const synth = window.speechSynthesis;
 const voices = synth.getVoices();
@@ -15,7 +16,7 @@ const CARD_FLIP_DELAY = 1000;
 
 console.log(voices);
 
-const revealBeforeStart = true;
+let revealBeforeStart = false;
 
 function generateCards(allowedLetters, cardCount) {
   console.log(allowedLetters);
@@ -99,19 +100,27 @@ function getInitialVoiceIndex() {
 
 function App() {
   const urlParams = new URLSearchParams(window.location.search);
-
+  const [reveal, setReveal] = useState(true);
   const [cards, setCards] = useState(generateCards(
     urlParams.get(QUERY_CHARS) ?? LOWERCASE_LETTERS,
     urlParams.get('cardCount') ?? 13));
 
-  if(revealBeforeStart) {
+  useEffect(() => {
+    if(! reveal) return;
+
+    setCards(cards.map(c => {
+      return {...c, faceDown: false}
+    }));
+
     setTimeout(() => {
-      const newCards = cards.map(c => {
-        return {...c, faceDown: true};
-      });
-      setCards(newCards);
-    }, 2000);
-  }
+      setReveal(false);
+      setCards(cards.map(c => {
+        return {...c, faceDown: true}
+      }));
+
+    }, INITIAL_REVEAL_MILLIS);
+
+  }, [reveal])
 
   const [revealedCount, setRevealedCount] = useState(0);
   const [voiceIndex, setVoiceIndex] = useState(getInitialVoiceIndex());
