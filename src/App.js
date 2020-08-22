@@ -108,18 +108,17 @@ function App() {
   useEffect(() => {
     if(! reveal) return;
 
-    setCards(cards.map(c => {
+    setCards(cards => cards.map(c => {
       return {...c, faceDown: false}
     }));
 
     setTimeout(() => {
       setReveal(false);
-      setCards(cards.map(c => {
-        return {...c, faceDown: true}
-      }));
-
+      setCards(cards => 
+        cards.map(c => {
+          return {...c, faceDown: true}
+        }));
     }, INITIAL_REVEAL_MILLIS);
-
   }, [reveal])
 
   const [revealedCount, setRevealedCount] = useState(0);
