@@ -8,6 +8,7 @@ const UPPERCASE_LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 const NUMBERS = '0123456789';
 const QUERY_CHARS = 'characters';
 const INITIAL_REVEAL_MILLIS = 5000;
+const REVEAL_MILLIS = 2000;
 
 const synth = window.speechSynthesis;
 const voices = synth.getVoices();
@@ -105,13 +106,24 @@ function App() {
     urlParams.get(QUERY_CHARS) ?? LOWERCASE_LETTERS,
     urlParams.get('cardCount') ?? 13));
 
-  useEffect(() => {
+  const flipCards = faceDown =>
+    setCards(cards => cards.map(c => {
+      return {...c, faceDown: faceDown}
+    }));
+
+  const performReveal = (reveal) => {
     if(! reveal) return;
 
-    const flipCards = faceDown =>
-      setCards(cards => cards.map(c => {
-        return {...c, faceDown: faceDown}
-      }));
+    flipCards(false);
+
+    setTimeout(() => {
+      setReveal(false);
+      flipCards(true);
+    }, INITIAL_REVEAL_MILLIS);
+  };
+
+  useEffect(() => {
+    if(! reveal) return;
 
     flipCards(false);
 
@@ -175,10 +187,20 @@ function App() {
     <div className="youWin">You Won!</div> :
     <Board cards={cards} onClick={onClick} />;
 
+  const onRevealClick = () => {
+    flipCards(false);
+
+    setTimeout(() => {
+      setReveal(false);
+      flipCards(true);
+    }, REVEAL_MILLIS);
+  };
+
   return (
     <div className="App">
       <header className="App-header">
-        <h1>Matching</h1>
+        <h1>Matching <div onClick={onRevealClick} style={{display: 'block', float: 'right'}}>👁</div></h1>
+        
       </header>
       <section className="App-main">
         {content}        
