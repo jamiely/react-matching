@@ -28,8 +28,9 @@
 }
 
 .card {
-    background-color: #333;
-    border: 1px blue solid;
+    background-color: PaleVioletRed ;
+    border: 1px pink  solid;
+    outline: 1px solid transparent;
     /* height: 60px;
     width: 60px; */
     margin: 10px;

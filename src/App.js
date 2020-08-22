@@ -110,6 +110,9 @@ function App() {
 
   function onClick(arg) {
     const {cardIndex, recite} = arg;
+    const card = cards[cardIndex];
+    if(card.hidden) return;
+
     if(revealedCount >= 2) return;
     say(recite, {voiceIndex, volume});
 
