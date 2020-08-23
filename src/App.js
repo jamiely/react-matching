@@ -111,17 +111,6 @@ function App() {
       return {...c, faceDown: faceDown}
     }));
 
-  const performReveal = (reveal) => {
-    if(! reveal) return;
-
-    flipCards(false);
-
-    setTimeout(() => {
-      setReveal(false);
-      flipCards(true);
-    }, INITIAL_REVEAL_MILLIS);
-  };
-
   useEffect(() => {
     if(! reveal) return;
 
