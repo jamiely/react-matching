@@ -13,6 +13,8 @@ cards are matched.
 
 # Features
 
+## Characters
+
 Change characters used by clicking on the links. The url parameter
 `characters` controls what characters are used in the game. This is
 useful if you are trying to teach someone specific characters like
@@ -23,6 +25,27 @@ bottom of the page for setting voice type and volume.
 
 There are also handy URLs at the bottom of the page preconfigured for
 particular character lists.
+
+## Words
+
+Words can be specified to be on the cards using the `words` query string
+variable. The format of the words should be:
+
+```
+?words=text1:pronunciation1,text2,text3,text4:pronunciation4
+```
+
+You can either provide some text which will be pronounced as is, or use a colon
+to denote the pronunciation that should be used. Words are comma-delimited.
+
+## Font Size
+
+It is important to set the font size since you may have some really long words.
+This is done via the `fontSize` query parameter. Example:
+
+```
+?fontSize=50pt
+```
 
 # Screenshots
 

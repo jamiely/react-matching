@@ -42,7 +42,7 @@ const jitters = (() => {
 
 console.log(jitters);
 
-function Board({cards, onClick}) {
+function Board({cards, onClick, fontSize}) {
   const onCardClickGen = (cardIndex) => {
     return (card) => {
       onClick({cardIndex, ...card})
@@ -50,7 +50,7 @@ function Board({cards, onClick}) {
   };
 
   return (
-    <div className="board">
+    <div className="board" style={{fontSize: fontSize}}>
       { cards.map ((card, index) => {
         const rotation = rotations[index % rotations.length];
         const [jx, jy] = jitters[index % jitters.length];

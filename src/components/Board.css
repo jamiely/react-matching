@@ -1,6 +1,5 @@
 .board {
     display: grid;
-    font-size: 50pt;
 }
 
 @media all and (orientation:portrait) {

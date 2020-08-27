@@ -5,8 +5,14 @@ import Board from './components/Board';
 
 const LOWERCASE_LETTERS = 'abcdefghijklmnopqrstuvwxyz';
 const UPPERCASE_LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+const LETTER_WORDS = 
+  _.zip(UPPERCASE_LETTERS.split(''), LOWERCASE_LETTERS.split(''))
+  .map(([upper, lower]) => `${upper}${lower}:${lower}`);
+
 const NUMBERS = '0123456789';
 const QUERY_CHARS = 'characters';
+const QUERY_WORDS = 'words';
 const INITIAL_REVEAL_MILLIS = 5000;
 const REVEAL_MILLIS = 2000;
 
@@ -19,7 +25,7 @@ console.log(voices);
 
 let revealBeforeStart = false;
 
-function generateCards(allowedLetters, cardCount) {
+function generateCardsByCharacter(allowedLetters, cardCount) {
   console.log(allowedLetters);
 
   const baseCards = allowedLetters.split('').map(c => {
@@ -99,12 +105,46 @@ function getInitialVoiceIndex() {
   return 0;
 }
 
+function getCards(urlParams) {
+  if(urlParams.get(QUERY_CHARS)) return getCardsByCharacter(urlParams);
+  return getCardsByWords(urlParams);
+}
+
+function getCardsByWords(urlParams) {
+  const words = urlParams.get(QUERY_WORDS);
+  if(! words) {
+    console.error('No words were specified.')
+    return [];
+  }
+
+  const getCardFromWord = word => {
+    const [text, ...rest] = word.split(':');
+    let recite = rest.length ? rest[0] : text;
+    recite = recite.toLowerCase();
+
+    return {
+      text,
+      recite,
+      faceDown: !revealBeforeStart
+    }
+  }
+
+  const base = words.split(',').map(getCardFromWord);
+  return _.shuffle(base.concat(...base));
+}
+
+function getCardsByCharacter(urlParams) {
+  const cards = generateCardsByCharacter(
+    urlParams.get(QUERY_CHARS) ?? LOWERCASE_LETTERS,
+    urlParams.get('cardCount') ?? 13);
+  return cards;
+}
+
 function App() {
   const urlParams = new URLSearchParams(window.location.search);
   const [reveal, setReveal] = useState(true);
-  const [cards, setCards] = useState(generateCards(
-    urlParams.get(QUERY_CHARS) ?? LOWERCASE_LETTERS,
-    urlParams.get('cardCount') ?? 13));
+  const [cards, setCards] = useState(getCards(urlParams));
+  const fontSize = urlParams.get('fontSize') ?? '60pt';
 
   const flipCards = faceDown =>
     setCards(cards => cards.map(c => {
@@ -174,7 +214,7 @@ function App() {
 
   let content = isWin ? 
     <div className="youWin">You Won!</div> :
-    <Board cards={cards} onClick={onClick} />;
+    <Board fontSize={fontSize} cards={cards} onClick={onClick} />;
 
   const onRevealClick = () => {
     flipCards(false);
@@ -198,11 +238,14 @@ function App() {
         <ul className="letterList">
           <li><a href={`/?${QUERY_CHARS}=` + UPPERCASE_LETTERS}>Uppercase Letters</a></li>
           <li><a href={`/?${QUERY_CHARS}=` + LOWERCASE_LETTERS}>Lowercase Letters</a></li>
+          <li><a href={`/?fontSize=45pt&${QUERY_WORDS}=` + LETTER_WORDS.join(',')}>Upper and Lowercase Letters Combined</a></li>
           <li><a href={`/?${QUERY_CHARS}=` + NUMBERS}>Numbers</a></li>
           <li><a href={`/?${QUERY_CHARS}=` + UPPERCASE_LETTERS.substr(0, 13)}>Uppercase Letters (1st half)</a></li>
           <li><a href={`/?${QUERY_CHARS}=` + UPPERCASE_LETTERS.substr(13, 13)}>Uppercase Letters (2nd half)</a></li>
           <li><a href={`/?${QUERY_CHARS}=` + LOWERCASE_LETTERS.substr(0, 13)} >Lowercase Letters (1st half)</a></li>
           <li><a href={`/?${QUERY_CHARS}=` + LOWERCASE_LETTERS.substr(13, 13)}>Lowercase Letters (2nd half)</a></li>
+          <li><a href={`/?fontSize=45pt&${QUERY_WORDS}=` + LETTER_WORDS.slice(0, 13).join(',')}>Upper and Lowercase Letters Combined (1st half)</a></li>
+          <li><a href={`/?fontSize=45pt&${QUERY_WORDS}=` + LETTER_WORDS.slice(13, 26).join(',')}>Upper and Lowercase Letters Combined (2nd half)</a></li>
         </ul>
 
         <fieldset>
