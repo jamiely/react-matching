@@ -107,11 +107,16 @@ function getInitialVoiceIndex() {
 
 function getCards(urlParams) {
   if(urlParams.get(QUERY_CHARS)) return getCardsByCharacter(urlParams);
-  return getCardsByWords(urlParams);
+  if(urlParams.get(QUERY_WORDS)) return getCardsByWords(urlParams);
+
+  let words = _.shuffle(LETTER_WORDS);
+  words = words.slice(0, 8);
+
+  window.location = `${window.location.href}?words=${words.join(',')}&fontSize=45pt`;
 }
 
 function getCardsByWords(urlParams) {
-  const words = urlParams.get(QUERY_WORDS);
+  const words = urlParams.get(QUERY_WORDS) ?? LETTER_WORDS.join(',');
   if(! words) {
     console.error('No words were specified.')
     return [];
