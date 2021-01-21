@@ -6,6 +6,9 @@ import Board from './components/Board';
 const LOWERCASE_LETTERS = 'abcdefghijklmnopqrstuvwxyz';
 const UPPERCASE_LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
+const SIGHT_WORDS = ["you", "the", "why", "do", "go", "some", "one", "two", "blue", "look", "where", "down", "who", "here", "said", "come"];
+const SIGHT_WORDS1 = SIGHT_WORDS;
+
 const LETTER_WORDS = 
   _.zip(UPPERCASE_LETTERS.split(''), LOWERCASE_LETTERS.split(''))
   .map(([upper, lower]) => `${upper}${lower}:${lower}`);
@@ -92,6 +95,11 @@ function say(word, {voiceIndex, volume}) {
   utterThis.voice = voices[voiceIndex ?? 0];
   utterThis.volume = volume;
   synth.speak(utterThis);
+}
+
+function createWordsLink(label, words) {
+  let url = `?words=${words.join(',')}&fontSize=12pt`;
+  return <a href={ url }>{ label }</a>;
 }
 
 function calcIsWin(cards) {
@@ -251,6 +259,7 @@ function App() {
           <li><a href={`/?${QUERY_CHARS}=` + LOWERCASE_LETTERS.substr(13, 13)}>Lowercase Letters (2nd half)</a></li>
           <li><a href={`/?fontSize=45pt&${QUERY_WORDS}=` + LETTER_WORDS.slice(0, 13).join(',')}>Upper and Lowercase Letters Combined (1st half)</a></li>
           <li><a href={`/?fontSize=45pt&${QUERY_WORDS}=` + LETTER_WORDS.slice(13, 26).join(',')}>Upper and Lowercase Letters Combined (2nd half)</a></li>
+          <li>{createWordsLink("Sight Words 1", SIGHT_WORDS1)}</li>
         </ul>
 
         <fieldset>
