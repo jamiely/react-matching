@@ -14,6 +14,7 @@ const LETTER_WORDS =
   .map(([upper, lower]) => `${upper}${lower}:${lower}`);
 
 const NUMBERS = '0123456789';
+const NUMBERS_1020 = "11,12,13,14,15,20,16,17,18,19";
 const QUERY_CHARS = 'characters';
 const QUERY_WORDS = 'words';
 const INITIAL_REVEAL_MILLIS = 5000;
@@ -253,6 +254,7 @@ function App() {
           <li><a href={`/?${QUERY_CHARS}=` + LOWERCASE_LETTERS}>Lowercase Letters</a></li>
           <li><a href={`/?fontSize=45pt&${QUERY_WORDS}=` + LETTER_WORDS.join(',')}>Upper and Lowercase Letters Combined</a></li>
           <li><a href={`/?${QUERY_CHARS}=` + NUMBERS}>Numbers</a></li>
+          <li><a href={`/?${QUERY_WORDS}=` + NUMBERS_1020}>Numbers 10-20</a></li>
           <li><a href={`/?${QUERY_CHARS}=` + UPPERCASE_LETTERS.substr(0, 13)}>Uppercase Letters (1st half)</a></li>
           <li><a href={`/?${QUERY_CHARS}=` + UPPERCASE_LETTERS.substr(13, 13)}>Uppercase Letters (2nd half)</a></li>
           <li><a href={`/?${QUERY_CHARS}=` + LOWERCASE_LETTERS.substr(0, 13)} >Lowercase Letters (1st half)</a></li>
